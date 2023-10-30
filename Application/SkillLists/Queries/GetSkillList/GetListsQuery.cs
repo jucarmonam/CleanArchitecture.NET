@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
+using Application.Skills.Queries.GetSkill;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,24 +15,30 @@ public record GetListsQuery : IRequest<List<SkillListDto>>;
 
 public class GetListsQueryHandler : IRequestHandler<GetListsQuery, List<SkillListDto>>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly ISkillListRepository _skillListRepository;
 
-    public GetListsQueryHandler(IApplicationDbContext context)
+    public GetListsQueryHandler(ISkillListRepository skillListRepository)
     {
-        _context = context;
+        _skillListRepository = skillListRepository;
     }
 
     public async Task<List<SkillListDto>> Handle(GetListsQuery request, CancellationToken cancellationToken)
     {
-        var lists = await _context
-            .SkillLists
-            .AsNoTracking()
+        List<SkillList> listsQuery = await _skillListRepository.GetAllListsWithSkills();
+
+        var lists = listsQuery
             .Select(p => new SkillListDto(
                 p.Id,
                 p.Title,
-                p.Skills))
-            .ToListAsync(cancellationToken);
+                p.Skills!.Select(s => new SkillDto(
+                    s.Id,
+                    s.ListId,
+                    s.Name,
+                    s.Description,
+                    s.Level.ToString())
+                ).ToList()
+                )).ToList();
 
-        return lists ?? throw new Exception();
+        return lists;
     }
 }

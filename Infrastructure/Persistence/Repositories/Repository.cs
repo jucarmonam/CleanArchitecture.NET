@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -37,6 +38,11 @@ namespace Infrastructure.Persistence.Repositories
         public Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<TBaseEntity>> GetAllAsync(Expression<Func<TBaseEntity, bool>> filter)
+        {
+            return await _context.Set<TBaseEntity>().Where(filter).ToListAsync();
         }
     }
 }

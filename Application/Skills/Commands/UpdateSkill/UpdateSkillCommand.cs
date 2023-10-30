@@ -25,11 +25,11 @@ public class UpdateSkillCommandHandler : IRequestHandler<UpdateSkillCommand>
 
     public async Task Handle(UpdateSkillCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _skillRepository.GetByIdAsync(request.ListId);
+        var entity = await _skillRepository.GetByIdAsync(request.SkillId);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(Skill), request.ListId);
+            throw new NotFoundException(nameof(Skill), request.SkillId);
         }
 
         entity.ListId = request.ListId;

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Skills.Queries.GetSkill;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.SkillLists.Queries.GetSkillList;
 
-public record SkillListDto(int Id, string? Title, IList<Skill> Skills);
+public record SkillListDto(int Id, string? Title, IList<SkillDto> Skills);
 /*
 public class SkillListDto
 {

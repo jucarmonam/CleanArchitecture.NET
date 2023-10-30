@@ -1,5 +1,9 @@
 ﻿using Application.Common.Interfaces;
+using Application.Skills.Queries.GetSkill;
 using Domain.Entities;
+using Domain.Enums;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -8,6 +12,12 @@ namespace Infrastructure.Persistence.Repositories
         public SkillRepository(ApplicationDbContext context)
             : base(context)
         {
+        }
+
+        public async Task<List<LevelResponse>> GetAllSkillsByLevel(SkillLevel skillLevel)
+        {
+            var level = new SqlParameter("@Level", skillLevel);
+            return await _context.Set<LevelResponse>().FromSqlRaw("uspExpertSkills @Level", level).ToListAsync();
         }
     }
 }

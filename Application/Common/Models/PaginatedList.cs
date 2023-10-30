@@ -3,7 +3,7 @@
 namespace Application.Common.Models;
 public class PaginatedList<T>
 {
-    public IReadOnlyCollection<T> Items { get; }
+    public IEnumerable<T> Items { get; }
     public int Page { get; }
     public int TotalPages { get; }
     public int TotalCount { get; }
@@ -11,7 +11,7 @@ public class PaginatedList<T>
     public bool HasNextPage => Page < TotalPages;
     public bool HasPreviousPage => Page > 1;
 
-    public PaginatedList(IReadOnlyCollection<T> items, int page, int pageSize, int totalCount)
+    public PaginatedList(IEnumerable<T> items, int page, int pageSize, int totalCount)
     {
         Items = items;
         Page = page;
@@ -19,10 +19,10 @@ public class PaginatedList<T>
         TotalCount = totalCount;
     }
 
-    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
+    public static PaginatedList<T> CreateAsync(IEnumerable<T> source, int pageNumber, int pageSize)
     {
-        var totalCount = await source.CountAsync();
-        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var totalCount = source.Count();
+        var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
         return new PaginatedList<T>(items, pageNumber, pageSize, totalCount);
     }

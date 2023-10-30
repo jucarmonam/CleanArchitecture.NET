@@ -16,14 +16,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseOpenApi();
-    app.UseSwaggerUi3();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-app.UseRouting();
-
 app.MapControllers();
-
-app.MapGet("/", () => "Hello World!");
 
 app.Run();

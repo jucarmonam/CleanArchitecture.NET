@@ -16,15 +16,15 @@ public record GetSkillsQuery : IRequest<PaginatedList<SkillDto>>
 
 public class GetSkillsQueryHandler : IRequestHandler<GetSkillsQuery, PaginatedList<SkillDto>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetSkillsQueryHandler(IApplicationDbContext context)
+    private readonly ISkillRepository _skillRepository;
+    public GetSkillsQueryHandler(ISkillRepository skillRepository)
     {
-        _context = context;
+        _skillRepository = skillRepository;
     }
 
     public async Task<PaginatedList<SkillDto>> Handle(GetSkillsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Skill> skillsQuery = _context.Skills.Where(s => s.ListId == request.ListId);
+        var skillsQuery = await _skillRepository.GetAllAsync(s => s.ListId == request.ListId);
 
         var skillsResponseQuery = skillsQuery
             .Select(s => new SkillDto(
@@ -34,11 +34,11 @@ public class GetSkillsQueryHandler : IRequestHandler<GetSkillsQuery, PaginatedLi
                 s.Description, 
                 s.Level.ToString()));
 
-        var skills = await PaginatedList<SkillDto>.CreateAsync(
+        var skills = PaginatedList<SkillDto>.CreateAsync(
             skillsResponseQuery, 
             request.Page, 
             request.PageSize);
 
-        return skills ?? throw new Exception();
+        return skills;
     }
 }

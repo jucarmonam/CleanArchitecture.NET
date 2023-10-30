@@ -9,17 +9,14 @@ public record GetAllSkillsByLevelQuery(SkillLevel Level) : IRequest<List<LevelRe
 
 public class GetAllSkillsByLevelQueryHandler : IRequestHandler<GetAllSkillsByLevelQuery, List<LevelResponse>>
 {
-    private readonly IApplicationDbContext _context;
-    public GetAllSkillsByLevelQueryHandler(IApplicationDbContext context)
+    private readonly ISkillRepository _skillRepository;
+    public GetAllSkillsByLevelQueryHandler(ISkillRepository skillRepository)
     {
-        _context = context;
+        _skillRepository = skillRepository;
     }
 
     public async Task<List<LevelResponse>> Handle(GetAllSkillsByLevelQuery request, CancellationToken cancellationToken)
     {
-        var level = new SqlParameter("@Level", request.Level);
-        var result = await _context.Set<LevelResponse>().FromSqlRaw("uspExpertSkills @Level", level).ToListAsync(cancellationToken);
-
-        return result ?? throw new Exception();
+        return await _skillRepository.GetAllSkillsByLevel(request.Level);
     }
 }

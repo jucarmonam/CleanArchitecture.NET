@@ -1,36 +1,34 @@
 ﻿using Application.Common.Interfaces;
-using Application.SkillLists.Commands.CreateSkillList;
-using Domain.Entities;
+using Application.Skills.Queries.GetSkill;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.SkillLists.Queries.GetSkillList;
 public record GetSkillListQuery(int Id) : IRequest<SkillListDto>;
 
 public class GetSkillListQueryHandler : IRequestHandler<GetSkillListQuery, SkillListDto>
 {
-    private readonly IApplicationDbContext _context;
-    public GetSkillListQueryHandler(IApplicationDbContext context) 
+    private readonly ISkillListRepository _skillListRepository;
+    public GetSkillListQueryHandler(ISkillListRepository skillListRepository) 
     {
-        _context = context; 
+        _skillListRepository = skillListRepository;
     }
 
     public async Task<SkillListDto> Handle(GetSkillListQuery request, CancellationToken cancellationToken)
     {
-        var skillList = await _context
-            .SkillLists
-            .Where(p => p.Id == request.Id)
-            .Select(p => new SkillListDto(
-                p.Id,
-                p.Title,
-                p.Skills))
-            .FirstOrDefaultAsync(cancellationToken);
+        var skillListQuery = await _skillListRepository.GetListByIdWithSkills(request.Id);
 
-        return skillList ?? throw new Exception();
+        var skillList = new SkillListDto(
+                skillListQuery.Id,
+                skillListQuery.Title,
+                skillListQuery.Skills!
+                .Select(s => new SkillDto(
+                    s.Id,
+                    s.ListId,
+                    s.Name,
+                    s.Description,
+                    s.Level.ToString()
+                    )).ToList());
+
+        return skillList;
     }
 }
