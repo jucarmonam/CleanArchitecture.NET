@@ -8,10 +8,10 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            var assembly = typeof(DependencyInjection).Assembly;
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(configuration => 
-                configuration.RegisterServicesFromAssembly(assembly));
-            services.AddValidatorsFromAssembly(assembly);
+                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             return services;
         }

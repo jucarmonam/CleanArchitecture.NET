@@ -40,9 +40,9 @@ namespace Infrastructure.Persistence.Repositories
             return _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<TBaseEntity>> GetAllAsync(Expression<Func<TBaseEntity, bool>> filter)
+        public IQueryable<TBaseEntity> GetAllAsync(Expression<Func<TBaseEntity, bool>> filter)
         {
-            return await _context.Set<TBaseEntity>().Where(filter).ToListAsync();
+            return _context.Set<TBaseEntity>().Where(filter);
         }
     }
 }

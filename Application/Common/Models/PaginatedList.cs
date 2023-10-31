@@ -19,10 +19,10 @@ public class PaginatedList<T>
         TotalCount = totalCount;
     }
 
-    public static PaginatedList<T> CreateAsync(IEnumerable<T> source, int pageNumber, int pageSize)
+    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
     {
-        var totalCount = source.Count();
-        var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        var totalCount = await source.CountAsync();
+        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PaginatedList<T>(items, pageNumber, pageSize, totalCount);
     }

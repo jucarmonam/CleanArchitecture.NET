@@ -1,10 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
-using Domain.Entities;
-using Domain.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Skills.Queries.GetSkill;
 public record GetSkillsQuery : IRequest<PaginatedList<SkillDto>>
@@ -17,24 +14,22 @@ public record GetSkillsQuery : IRequest<PaginatedList<SkillDto>>
 public class GetSkillsQueryHandler : IRequestHandler<GetSkillsQuery, PaginatedList<SkillDto>>
 {
     private readonly ISkillRepository _skillRepository;
-    public GetSkillsQueryHandler(ISkillRepository skillRepository)
+    private readonly IMapper _mapper;
+    public GetSkillsQueryHandler(ISkillRepository skillRepository, IMapper mapper)
     {
         _skillRepository = skillRepository;
+        _mapper = mapper;
     }
 
     public async Task<PaginatedList<SkillDto>> Handle(GetSkillsQuery request, CancellationToken cancellationToken)
     {
-        var skillsQuery = await _skillRepository.GetAllAsync(s => s.ListId == request.ListId);
+        var skillsQuery = _skillRepository.GetAllAsync(s => s.ListId == request.ListId);
 
-        var skillsResponseQuery = skillsQuery
-            .Select(s => new SkillDto(
-                s.Id, 
-                s.ListId, 
-                s.Name, 
-                s.Description, 
-                s.Level.ToString()));
+        //This way only works in Queryables is faster because works in db level but with large amounts of data
+        //var skillsResponseQuery = skillsQuery.ProjectTo<SkillDto>(_mapper.ConfigurationProvider);
+        var skillsResponseQuery = skillsQuery.Select(sq => _mapper.Map<SkillDto>(sq));
 
-        var skills = PaginatedList<SkillDto>.CreateAsync(
+        var skills = await PaginatedList<SkillDto>.CreateAsync(
             skillsResponseQuery, 
             request.Page, 
             request.PageSize);
