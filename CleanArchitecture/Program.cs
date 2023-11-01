@@ -36,7 +36,7 @@ else
 {
     //HTTP Strict Transport Security(HSTS)
     //Is a header returned by the server (this API in this case) and instructs web browsers to prevent users from connecting over HTTP
-    //However trying from the browser it redirect automatically from http port to the https port
+    //However trying from the browser it redirects automatically from the http port to the https port
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
