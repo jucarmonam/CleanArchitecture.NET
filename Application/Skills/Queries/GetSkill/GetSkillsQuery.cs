@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 
 namespace Application.Skills.Queries.GetSkill;
@@ -25,9 +26,9 @@ public class GetSkillsQueryHandler : IRequestHandler<GetSkillsQuery, PaginatedLi
     {
         var skillsQuery = _skillRepository.GetAllAsync(s => s.ListId == request.ListId);
 
+        //var skillsResponseQuery = skillsQuery.Select(sq => _mapper.Map<SkillDto>(sq));
         //This way only works in Queryables is faster because works in db level but with large amounts of data
-        //var skillsResponseQuery = skillsQuery.ProjectTo<SkillDto>(_mapper.ConfigurationProvider);
-        var skillsResponseQuery = skillsQuery.Select(sq => _mapper.Map<SkillDto>(sq));
+        var skillsResponseQuery = skillsQuery.ProjectTo<SkillDto>(_mapper.ConfigurationProvider);
 
         var skills = await PaginatedList<SkillDto>.CreateAsync(
             skillsResponseQuery, 

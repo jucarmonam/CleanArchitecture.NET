@@ -10,6 +10,5 @@ namespace Application.Common.Interfaces
         DbSet<Skill> Skills { get; }
         DbSet<SkillList> SkillLists { get; }
         DbSet<LevelResponse> LevelResponses { get; }
-        //IQueryable<Skill> SearchCustomers(int level);
     }
 }

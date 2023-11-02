@@ -1,13 +1,15 @@
 ﻿using Application.Common.Interfaces;
 using Application.Skills.Queries.GetSkill;
 using Domain.Entities;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, UserRoleEntity, Guid>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Skill> Skills => Set<Skill>();

@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence;
 using WebUI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Initialise and seed database
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.SeedAsync();
+    }
 }
 else
 {
