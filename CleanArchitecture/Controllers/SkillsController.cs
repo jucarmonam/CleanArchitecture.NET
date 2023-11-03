@@ -2,7 +2,7 @@
 using Application.Skills.Commands.CreateSkill;
 using Application.Skills.Commands.DeleteSkill;
 using Application.Skills.Commands.UpdateSkill;
-using Application.Skills.Queries.GetSkill;
+using Application.Skills.Queries.GetSkillsWithPagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;

@@ -1,6 +1,4 @@
-﻿using Application.Skills.Queries.GetSkill;
-using Domain.Entities;
-using Domain.Enums;
+﻿using Domain.Entities;
 
 namespace Application.Common.Interfaces
 {

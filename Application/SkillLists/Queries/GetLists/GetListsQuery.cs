@@ -1,10 +1,9 @@
 ﻿using Application.Common.Interfaces;
-using Application.Skills.Queries.GetSkill;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.SkillLists.Queries.GetSkillList;
+namespace Application.SkillLists.Queries.GetLists;
 public record GetListsQuery : IRequest<List<SkillListDto>>;
 
 public class GetListsQueryHandler : IRequestHandler<GetListsQuery, List<SkillListDto>>

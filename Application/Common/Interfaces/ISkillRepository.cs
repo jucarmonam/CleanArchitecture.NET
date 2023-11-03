@@ -1,4 +1,4 @@
-﻿using Application.Skills.Queries.GetSkill;
+﻿using Application.Skills.Queries.GetSkillsByLevel;
 using Domain.Entities;
 using Domain.Enums;
 

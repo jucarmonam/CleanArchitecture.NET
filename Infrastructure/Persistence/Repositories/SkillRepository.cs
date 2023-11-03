@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Application.Skills.Queries.GetSkill;
+using Application.Skills.Queries.GetSkillsByLevel;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.Data.SqlClient;

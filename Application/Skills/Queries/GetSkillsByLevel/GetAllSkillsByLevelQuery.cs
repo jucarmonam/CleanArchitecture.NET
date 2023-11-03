@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Skills.Queries.GetSkill;
+namespace Application.Skills.Queries.GetSkillsByLevel;
 public record GetAllSkillsByLevelQuery(SkillLevel Level) : IRequest<List<LevelResponse>>;
 
 public class GetAllSkillsByLevelQueryHandler : IRequestHandler<GetAllSkillsByLevelQuery, List<LevelResponse>>

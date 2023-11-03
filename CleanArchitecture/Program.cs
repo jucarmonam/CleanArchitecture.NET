@@ -53,6 +53,8 @@ else
 app.UseHttpsRedirection();
 app.UseCors("AllowMyApp");
 
+app.UseAuthentication();
+
 app.MapControllers();
 
 app.Run();

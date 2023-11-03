@@ -4,7 +4,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 
-namespace Application.Skills.Queries.GetSkill;
+namespace Application.Skills.Queries.GetSkillsWithPagination;
 public record GetSkillsQuery : IRequest<PaginatedList<SkillDto>>
 {
     public int ListId { get; init; }

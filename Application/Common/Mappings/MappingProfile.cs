@@ -1,5 +1,5 @@
-﻿using Application.SkillLists.Queries.GetSkillList;
-using Application.Skills.Queries.GetSkill;
+﻿using Application.SkillLists.Queries;
+using Application.Skills.Queries.GetSkillsWithPagination;
 using AutoMapper;
 using Domain.Entities;
 

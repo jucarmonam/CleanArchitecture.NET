@@ -1,12 +1,6 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Skills.Queries.GetSkill;
-using Azure.Core;
+﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace Infrastructure.Persistence.Repositories
 {

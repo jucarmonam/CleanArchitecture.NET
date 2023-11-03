@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Application.Skills.Queries.GetSkill;
 using AutoMapper;
 using MediatR;
 

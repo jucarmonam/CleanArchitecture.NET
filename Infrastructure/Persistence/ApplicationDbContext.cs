@@ -1,9 +1,8 @@
 ﻿using Application.Common.Interfaces;
-using Application.Skills.Queries.GetSkill;
+using Application.Skills.Queries.GetSkillsByLevel;
 using Domain.Entities;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

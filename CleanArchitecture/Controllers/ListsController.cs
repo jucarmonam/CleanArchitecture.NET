@@ -3,6 +3,8 @@ using Application.SkillLists.Commands.CreateSkillList;
 using Application.SkillLists.Queries.GetSkillList;
 using Application.SkillLists.Commands.DeleteSkillList;
 using Application.SkillLists.Commands.UpdateSkillList;
+using Application.SkillLists.Queries;
+using Application.SkillLists.Queries.GetLists;
 
 namespace WebUI.Controllers;
 
