@@ -13,16 +13,15 @@ public class UsersController : ApiControllerBase
         _identityService = identityService;
     }
 
-    [HttpGet(Name = nameof(GetVisibleUsers))]
+    [HttpGet]
     public async Task<ActionResult<PaginatedList<UserDto>>> GetVisibleUsers([FromQuery] PaginOptions paginOptions)
     {
         return await _identityService.GetUsersAsync(paginOptions);
     }
 
     [Authorize]
-    [ProducesResponseType(401)]
-    [HttpGet("{userId}", Name = nameof(GetUserById))]
-    public Task<IActionResult> GetUserById(Guid userId)
+    [HttpGet("{userId}")]
+    public Task<IActionResult> GetUserById(int userId)
     {
         // TODO is userId the current user's ID?
         // If so, return myself.
@@ -30,12 +29,17 @@ public class UsersController : ApiControllerBase
         throw new NotImplementedException();
     }
 
-    [HttpPost(Name = nameof(RegisterUser))]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterForm form)
+    [HttpPost]
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterVM form)
     {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest("Please, provide all the required fields");
+        }
+
         var (succeeded, message) = await _identityService.CreateUserAsync(form);
 
-        if (succeeded) return Created("todo", null);
+        if (succeeded) return Created("User created", null);
 
         return BadRequest(message);
     }

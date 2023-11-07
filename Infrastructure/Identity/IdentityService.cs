@@ -5,16 +5,13 @@ using Microsoft.AspNetCore.Identity;
 namespace Infrastructure.Identity;
 public class IdentityService : IIdentityService
 {
-
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public IdentityService(
-        UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory)
+    public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
-        _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
+        _roleManager = roleManager;
     }
     public async Task<PaginatedList<UserDto>> GetUsersAsync(PaginOptions paginOptions)
     {
@@ -36,18 +33,25 @@ public class IdentityService : IIdentityService
         return users;
     }
 
-    public async Task<(bool Succeeded, string ErrorMessage)> CreateUserAsync(RegisterForm registerForm)
+    public async Task<(bool Succeeded, string ErrorMessage)> CreateUserAsync(RegisterVM registerVM)
     {
+        var userExists = await _userManager.FindByEmailAsync(registerVM.Email);
+
+        if (userExists is not null)
+        {
+            return (false, $"User {registerVM.Email} already exists");
+        }
+
         var user = new ApplicationUser
         {
-            Email = registerForm.Email,
-            FirstName = registerForm.FirstName,
-            LastName = registerForm.LastName,
-            UserName = registerForm.Email,
+            Email = registerVM.Email,
+            FirstName = registerVM.FirstName,
+            LastName = registerVM.LastName,
+            UserName = registerVM.Email,
             CreatedAt = DateTimeOffset.UtcNow
         };
 
-        var result = await _userManager.CreateAsync(user, registerForm.Password);
+        var result = await _userManager.CreateAsync(user, registerVM.Password);
 
         if(!result.Succeeded)
         {
