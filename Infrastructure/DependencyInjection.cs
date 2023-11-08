@@ -27,6 +27,22 @@ public static class DependencyInjection
 
         services.AddScoped<ApplicationDbContextInitialiser>();
 
+        var tokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JWT:Secret"])),
+
+            ValidateIssuer = true,
+            ValidIssuer = configuration["JWT:Issuer"],
+
+            ValidateAudience = true,
+            ValidAudience = configuration["JWT:Audience"],
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+        services.AddSingleton(tokenValidationParameters);
+
         services
             .AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole>()
@@ -42,17 +58,7 @@ public static class DependencyInjection
         {
             options.SaveToken = true;
             options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JWT:Secret"])),
-
-                ValidateIssuer = true,
-                ValidIssuer = configuration["JWT:Issuer"],
-
-                ValidateAudience = true,
-                ValidAudience = configuration["JWT:Audience"]
-            };
+            options.TokenValidationParameters = tokenValidationParameters;
         });
 
         services.AddTransient<IIdentityService, IdentityService>();

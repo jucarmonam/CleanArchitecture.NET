@@ -21,4 +21,6 @@ public class RegisterVM
     [MaxLength(100)]
     [Display(Name = "lastName", Description = "Last name")]
     public required string LastName { get; set; }
+
+    public required string Role { get; set; }
 }

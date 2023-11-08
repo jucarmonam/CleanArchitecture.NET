@@ -5,9 +5,12 @@ using Application.SkillLists.Commands.DeleteSkillList;
 using Application.SkillLists.Commands.UpdateSkillList;
 using Application.SkillLists.Queries;
 using Application.SkillLists.Queries.GetLists;
+using Microsoft.AspNetCore.Authorization;
+using Domain.Enums;
 
 namespace WebUI.Controllers;
 
+[Authorize(Roles = UserRoles.User)]
 public class ListsController : ApiControllerBase
 {
     [HttpGet]

@@ -16,6 +16,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<LevelResponse> LevelResponses => Set<LevelResponse>();
 
+        public DbSet<RefreshToken> RefreshTokens {  get; set; }
+
         public override DbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
@@ -29,13 +31,5 @@ namespace Infrastructure.Persistence
 
             base.OnModelCreating(modelBuilder);
         }
-
-        /*
-        public IQueryable<LevelResponse> SearchCustomers(int level)
-        {
-            SqlParameter skillLevel = new("@Level", level);
-            return this.Set<LevelResponse>().FromSqlRaw("EXECUTE uspExpertSkills @Level", skillLevel);
-        }
-        */
     }
 }

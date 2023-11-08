@@ -1,4 +1,5 @@
-﻿using Infrastructure.Identity;
+﻿using Domain.Enums;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -34,11 +35,16 @@ public class ApplicationDbContextInitialiser
     public async Task TrySeedAsync()
     {
         // Default roles
-        var administratorRole = new IdentityRole("Administrator");
+        var administratorRole = new IdentityRole(UserRoles.Administrator);
+        var userRole = new IdentityRole(UserRoles.User);
 
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
+        }
+        if (_roleManager.Roles.All(r => r.Name != userRole.Name))
+        {
+            await _roleManager.CreateAsync(userRole);
         }
 
         // Default users
