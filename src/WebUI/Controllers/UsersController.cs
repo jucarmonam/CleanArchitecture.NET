@@ -54,7 +54,7 @@ public class UsersController : ApiControllerBase
             return BadRequest("Please, provide all required fields");
         }
 
-        (AuthResultDto? token, string message) = await _identityService.Login(loginVM);
+        (AuthResultDto? token, string? message) = await _identityService.Login(loginVM);
 
         return token is not null ? Ok(token) : Unauthorized(message);
     }

@@ -14,19 +14,16 @@ namespace Infrastructure.Identity;
 public class IdentityService : IIdentityService
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
-    protected readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly TokenValidationParameters _tokenValidationParameters;
 
     public IdentityService(UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager,
         IConfiguration configuration,
         ApplicationDbContext context,
         TokenValidationParameters tokenValidationParameters)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
         _configuration = configuration;
         _context = context;
         _tokenValidationParameters = tokenValidationParameters;
@@ -86,7 +83,7 @@ public class IdentityService : IIdentityService
         return (true, null);
     }
 
-    public async Task<(AuthResultDto? Token, string ErrorMessage)> Login(LoginVM loginVM)
+    public async Task<(AuthResultDto? Token, string? ErrorMessage)> Login(LoginVM loginVM)
     {
         ApplicationUser? userExists = await _userManager.FindByEmailAsync(loginVM.Email);
 
