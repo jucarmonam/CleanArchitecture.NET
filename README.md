@@ -2,6 +2,6 @@
 
 # Command for db migration
 - ```bash
-  dotnet ef migrations add "InitialMigration" --project Infrastructure --startup-project CleanArchitecture --output-dir Persistence\Migrations
+  dotnet ef migrations add "InitialMigration" --project src\Infrastructure --startup-project src\WebUI --output-dir Persistence\Migrations
 - ```bash
-  dotnet ef database update --project Infrastructure --startup-project CleanArchitecture
+  dotnet ef database update --project src\Infrastructure --startup-project src\WebUI
