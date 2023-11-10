@@ -10,21 +10,21 @@ using Domain.Enums;
 
 namespace WebUI.Controllers;
 
-[Authorize(Roles = UserRoles.User)]
+//[Authorize(Roles = UserRoles.User)]
 public class ListsController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<SkillListDto>>> Get()
+    public async Task<ActionResult<List<SkillListDto>>> GetAllLists()
     {
-        return await Mediator.Send(new GetListsQuery());
+        return Ok(await Mediator.Send(new GetListsQuery()));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<SkillListDto>> Get(int Id)
+    public async Task<ActionResult<SkillListDto>> GetListById(int id)
     {
         try
         {
-            return Ok(await Mediator.Send(new GetSkillListQuery(Id)));
+            return Ok(await Mediator.Send(new GetSkillListQuery(id)));
         }
         catch (Exception ex)
         {
@@ -37,13 +37,8 @@ public class ListsController : ApiControllerBase
     {
         try
         {
-            if (command == null)
-            {
-                return BadRequest();
-            }
-
-            var skillList = await Mediator.Send(command);
-            return Ok(skillList);
+            var commandResult = await Mediator.Send(command);
+            return commandResult.result.Succeeded ? Ok(commandResult.listId) : BadRequest(commandResult.result.Errors);
         }
         catch (Exception ex)
         {
@@ -72,4 +67,3 @@ public class ListsController : ApiControllerBase
         return NoContent();
     }
 }
-
