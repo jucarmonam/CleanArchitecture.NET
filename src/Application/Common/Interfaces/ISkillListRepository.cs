@@ -6,6 +6,8 @@ namespace Application.Common.Interfaces
     {
         Task<List<SkillList>> GetAllListsWithSkills();
 
-        Task<SkillList> GetListByIdWithSkills(int Id);
+        Task<SkillList> GetListByIdWithSkills(int id);
+
+        Task<bool> BeUniqueTitle(string title, CancellationToken cancellationToken);
     }
 }
